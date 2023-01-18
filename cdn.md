@@ -29,6 +29,10 @@ The sequence diagram below shows how the high level data flow looks like.
   * CloudFront
   * CloudFormation
 
+## Known Limitations
+1. The maximum object size that can be distributed is 6mb due tue AWS Lambda limitations.
+2. The solution provides a guide for distributing a single object which will be accessed through a CloudFront URL. Access to different objects via URL (e.g https://{cloudfront-id}.cloudfront.net/{object-name}) is not supported, although it could be added with additional development.
+
 ## Running Steps
 ### Step 1: Create IAM Role for AWS Service execution.
 1. Login to AWS Console and navigate to `IAM` dashboard.
@@ -44,9 +48,9 @@ The sequence diagram below shows how the high level data flow looks like.
 3. Provide the Function name and select `Python 3.9` under **Runtime**.  
 4. Under **Permissions** click on **Change default execution role**, select **Use an existing role** and choose the role that we created in the previous step.
 5. Under **Advanced settings**, check the `Enable function URL` field. Since the Lambda function needs to be publicly accessible select `NONE` for Auth type. This also creates the necessary resource-based policies to allow public access to the function.
-5. Click **Creation function** to finish the function creation setup.
-6. Click on the **Configuration** tab and navigate to **Environmental variables** tab on left panel. 
-7. Clock on **edit** and add the following environmental variables and its respective values:
+6. Click **Creation function** to finish the function creation setup.
+7. Click on the **Configuration** tab and navigate to **Environmental variables** tab on left panel. 
+8. Clock on **edit** and add the following environmental variables and its respective values:
 
   | Key  | Value |
   | ------------- | ------------- |
@@ -56,8 +60,8 @@ The sequence diagram below shows how the high level data flow looks like.
   | BUCKET_NAME  | Name of the bucket that contains the object that you want to distribute  |
   | OBJECT_KEY  | Name of the object that will be distributed  |
 
-8. Navigate back to **Code**, copy and paste the contents of [LyveS3PresignedURL.py](code/s3_object_reader.py) into the Code source section.
-9. Note down the Lambda Function URL as shown in below figure.
+9. Navigate back to **Code**, copy and paste the contents of [LyveS3PresignedURL.py](code/s3_object_reader.py) into the Code source section.
+10. Note down the Lambda Function URL as shown in below figure.
   <p style="text-align:left"><img alt="Figure 3: Lambda Function " src="images/lambda_url.PNG" width="600"/></p>
 
 ### Step 3: Create the Amazon CloudFront configuration.
@@ -79,9 +83,8 @@ Hit the CloudFront URL your local browser and you will see the media file that s
 
 ## Tested by
 * Jan 6, 2023: Rahul Gode (rahul.gode@seagate.com)
-* month day, year: full_name (email) on your_environment
+* Jan 16, 2023: Alexander Chernin (alexander.chernin@seagate.com)
 
-## **Note:** All files should be uploaded (all the files you used for the integration solution) under one folder, including the README.md file. 
 ### Project Structure
 
 This section will describe the representation of each of the folders or files in the structure.
