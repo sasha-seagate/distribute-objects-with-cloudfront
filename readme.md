@@ -1,7 +1,7 @@
 # Distribute Lyve Cloud S3 media contents through Amazon CloudFront
 
 ## Introduction
-The following document will explain how to integrate Amazon CloudFront with AWS Lambda as origin to distribute the media contents from Lyve Cloud S3.
+The following document explains how to integrate Amazon CloudFront with AWS Lambda as an origin to distribute media content from Lyve Cloud S3.
 
 Fronting Lyve Cloud S3 media contents with Lambda and CloudFront allows you to cache content closer to the viewer by leveraging the globally distributed content distribution network. 
 
