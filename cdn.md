@@ -12,53 +12,44 @@ Amazon CloudFront and Lyve Cloud S3 Object Storage are used together to improve 
 ## How It Works
 The AWS Lambda function provided in this repository returns, upon request, the content of the specified S3 object and its content type. When accessed via a CloudFront URL, the content is retrieved from CloudFront's cache, rather than performing an additional GET operation to retrieve the object from Lyve Cloud's storage.
 
-## Architecture 
 The sequence diagram below shows how the high level data flow looks like.
 <p style="text-align:left"><img alt="Figure 1: Architecture – CloudFront with Lambda as origin" src="images/data_flow.PNG" width="600"/></p>
 
  
 ## Requirements
-* Lyve Cloud
-  * Access Key
-  * Secret Key
-  * S3 API Endpoint
-  * Name of the bucket that contains files to view
-* AWS Account
-  * IAM
-  * Lambda
-  * CloudFront
-  * CloudFormation
+* A Lyve Cloud Service Account with valid credentials and read permission for the bucket that holds the object to be distributed.
+* An AWS account with access to the IAM, Lambda, CloudFormation, and CloudFront services.
 
 ## Known Limitations
-1. The maximum object size that can be distributed is 6mb due tue AWS Lambda limitations.
-2. The solution provides a guide for distributing a single object which will be accessed through a CloudFront URL. Access to different objects via URL (e.g https://{cloudfront-id}.cloudfront.net/{object-name}) is not supported, although it could be added with additional development.
+1. The maximum object size that can be distributed is 6mb due to AWS Lambda limitations.
+2. This solution provides a guide for distributing a single object which will be accessed through a CloudFront URL. Access to different objects via URL (e.g https://{cloudfront-id}.cloudfront.net/{object-name}) is not supported, although it could be added with additional development.
 
 ## Running Steps
 ### Step 1: Create IAM Role for AWS Service execution.
-1. Login to AWS Console and navigate to `IAM` dashboard.
-2. Navigate to `Roles` in the left panel under `Access Management`.
+1. Login to AWS Console and navigate to **IAM** dashboard.
+2. Navigate to **Roles** in the left panel under **Access Management**.
 3. Click on **Create Role**. 
-4. Select `AWS service` under **Trusted entity type** and `Lambda` under **Use case** and click on **Next**.
-5. Select policy `AWSLambdaBasicExecutionRole` and click on **Next**.
-6. Give a name to the policy under **Role name** and click on **Create role**.
+4. Select **AWS service** under **Trusted entity type** and **Lambda** under **Use case**. Click on **Next**.
+5. Select policy **AWSLambdaBasicExecutionRole** and click on **Next**.
+6. Give a name to the Role under **Role name** and click on **Create role**.
 
 ### Step 2: Create Lambda Function and Obtain the Function URL.
-1. Navigate to the AWS Lambda console in the AWS Region you want to deploy the function.
+1. Navigate to the **AWS Lambda** console in the AWS region you want to deploy the function in.
 2. Click on **Create function**.
-3. Provide the Function name and select `Python 3.9` under **Runtime**.  
+3. Provide the function name and select **Python 3.9** under **Runtime**.  
 4. Under **Permissions** click on **Change default execution role**, select **Use an existing role** and choose the role that we created in the previous step.
-5. Under **Advanced settings**, check the `Enable function URL` field. Since the Lambda function needs to be publicly accessible select `NONE` for Auth type. This also creates the necessary resource-based policies to allow public access to the function.
+5. Under **Advanced settings**, check the **Enable function URL** field. Since the Lambda function needs to be publicly accessible select **NONE** for **Auth type**. This also creates the necessary resource-based policies to allow public access to the function.
 6. Click **Creation function** to finish the function creation setup.
-7. Click on the **Configuration** tab and navigate to **Environmental variables** tab on left panel. 
-8. Clock on **edit** and add the following environmental variables and its respective values:
+7. After the function creation process is finished, click on the **Configuration** tab and navigate to **Environmental variables** tab on left panel. 
+8. Click on **edit** and add the following environmental variables and its respective values:
 
   | Key  | Value |
   | ------------- | ------------- |
   | ACCESS_KEY  | Access Key to the Lyve Cloud S3 API  |
   | SECRET_KEY  | Secret Key to the Lyve Cloud S3 API  |
   | ENDPOINT  | Lyve Cloud S3 Endpoint URL  |
-  | BUCKET_NAME  | Name of the bucket that contains the object that you want to distribute  |
-  | OBJECT_KEY  | Name of the object that will be distributed  |
+  | BUCKET_NAME  | Name of the bucket that contains the media object that you want to distribute  |
+  | OBJECT_KEY  | Name of the media object that will be distributed  |
 
 9. Navigate back to **Code**, copy and paste the contents of [LyveS3PresignedURL.py](code/s3_object_reader.py) into the Code source section.
 10. Note down the Lambda Function URL as shown in below figure.
@@ -71,12 +62,12 @@ The sequence diagram below shows how the high level data flow looks like.
 4. Under **Lambda Function Endpoint** enter the function URL obtained earlier as shown in below screenshot.
      <p style="text-align:left"><img alt="Figure 4: cloudfront " src="images/cloudfront.PNG" width="600"/></p>
      Remove https:// and trailing slash from the Function URL while providing the input.
-5. Once the CloudFormation template is deployed, navigate to the **Outputs** tab of the CloudFormation stack to access the default CloudFront domain name created. You should see the object that you stored in your bucket when the distribution domain is accessed through browser.
+5. Once the CloudFormation template is deployed, navigate to the **Outputs** tab of the CloudFormation stack to access the default CloudFront domain name created. You should see the media object that you stored in your bucket when the distribution domain is accessed through browser.
     <p style="text-align:left"><img alt="Figure 5: cloudfront_url " src="images/cloudfront_url.PNG" width="600"/></p>
      
 
 ## Results 
-Hit the CloudFront URL your local browser and you will see the media file that stored in Lyve S3.
+Hit the CloudFront URL and your local browser will open the media object that stored in your Lyve Cloud bucket.
 <p style="text-align:left"><img alt="Figure 6: result  " src="images/result.PNG" width="600"/></p>
 
 
@@ -86,24 +77,18 @@ Hit the CloudFront URL your local browser and you will see the media file that s
 * Jan 16, 2023: Alexander Chernin (alexander.chernin@seagate.com)
 
 ### Project Structure
-
-This section will describe the representation of each of the folders or files in the structure.
 ```
 .
 ├── README.md
 ├── code
-│   └── css
-        lyves3browser.css
-│   └── js
-        lyves3browser.js
-        libs
+│   └── CFT_Cloudfront.yml
+│   └── s3_object_reader.py
 └── images
     └── cloudfront.PNG
         cloudfront_url.PNG
         result.PNG
         data_flow.PNG
         lambda_url.PNG
-        variables.PNG
 ```
 
 ### `/code`
