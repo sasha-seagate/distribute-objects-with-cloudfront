@@ -63,7 +63,7 @@ The sequence diagram below shows how the high level data flow looks like.
      <p align="center" style="text-align:left"><img alt="Figure 4: cloudfront " src="images/cloudformation.png" width="600"/></p>
      Remove https:// and trailing slash from the Function URL while providing the input.
 5. Once the CloudFormation template is deployed, navigate to the **Outputs** tab of the CloudFormation stack to access the default CloudFront domain name created. You should see the media object that you stored in your bucket when the distribution domain is accessed through browser.
-    <p align="center" style="text-align:left"><img alt="Figure 5: cloudfront_url " src="images/cloudfront_url.PNG" width="600"/></p>
+    <p align="center" style="text-align:left"><img alt="Figure 5: cloudfront_url " src="images/cloudfront_url.png" width="600"/></p>
      
 
 ## Results 
