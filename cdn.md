@@ -9,12 +9,18 @@ You could define custom domain names, turn on HTTPS delivery over TLS. Further, 
 
 Amazon CloudFront and Lyve Cloud S3 Object Storage are used together to improve the delivery and security of your mission critical applications. When a user requests for content through CloudFront, the request is routed to the edge location that provides the lowest latency and is delivered with optimal performance.
 
-## How It Works
+## How it Works
 The AWS Lambda function provided in this repository returns, upon request, the content of the specified S3 object and its content type. When accessed via a CloudFront URL, the content is retrieved from CloudFront's cache, rather than performing an additional GET operation to retrieve the object from Lyve Cloud's storage.
 
 The sequence diagram below shows how the high level data flow looks like.
-<p align="center" style="text-align:left"><img alt="Figure 1: Architecture – CloudFront with Lambda as origin" src="images/data_flow.PNG" width="600"/></p>
+<p align="center" style="text-align:left"><img alt="Figure 1: Architecture – CloudFront with Lambda as origin" src="images/data_flow.png" width="600"/></p>
 
+## Supported Content Types
+Since the AWS Lambda function retrieves the object's 'Content-Type' header and passes it along with the object's content, when the CloudFront URL is accessed through a web browser, the object will be displayed as long as the web browser supports displaying that content type while other file types such as Word documents, Excel sheets, and various other formats will be prompted to be downloaded.
+
+Generally speaking, common file types such as images (JPEG, PNG, GIF, etc.), videos (MP4, WebM, etc.), audio (MP3, WAV, etc.) and text files (HTML, CSS, JavaScript) will be displayed within the browser.
+
+These are the file types that were tested and successfully displayed when accessing the CloudFront URL in Microsoft Edge: MP4, HTML, TXT, PNG, JPG, and PDF.
  
 ## Requirements
 * A Lyve Cloud Service Account with valid credentials and read permission for the bucket that holds the object to be distributed.
@@ -51,13 +57,13 @@ The sequence diagram below shows how the high level data flow looks like.
   | BUCKET_NAME  | Name of the bucket that contains the media object that you want to distribute  |
   | OBJECT_KEY  | Name of the media object that will be distributed  |
   
-9. Navigate back to **Code**, copy and paste the contents of [s3_object_reader.py](code/s3_object_reader.py) into the Code source section.
+9. Navigate back to **Code**, copy and paste the contents of [s3_object_reader.py](code/s3_object_reader.py) into the Code source section, and click on **Deoploy**
 10. Note down the Lambda Function URL as shown in below figure.
   <p align="center" style="text-align:left"><img alt="Figure 3: Lambda Function " src="images/lambda_url.png" width="600"/></p>
 
 ### Step 3: Create the Amazon CloudFront configuration.
 1. Navigate to **CloudFormation** service and click on **Create Stack**.
-2. Under **Prerequisite - Prepare template** opt for the option 'Template is Ready'. 
+2. Under **Prerequisite - Prepare template** opt for the option **Template is Ready**. 
 3. Under **Specify template** select **Upload a template file**, click on **Choose File** and choose [CFT_Cloudfront.yml](code/CFT_Cloudfront.yml). Click on **Next**.
 4. Under **Lambda Function Endpoint** enter the function URL obtained earlier as shown in below screenshot.
      <p align="center" style="text-align:left"><img alt="Figure 4: cloudfront " src="images/cloudformation.png" width="600"/></p>
@@ -68,7 +74,7 @@ The sequence diagram below shows how the high level data flow looks like.
 
 ## Results 
 Hit the CloudFront URL and your local browser will open the media object that stored in your Lyve Cloud bucket.
-<p align="center" style="text-align:left"><img alt="Figure 6: result  " src="images/result.PNG" width="600"/></p>
+<p align="center" style="text-align:left"><img alt="Figure 6: result  " src="images/result.png" width="600"/></p>
 
 
 
@@ -84,11 +90,11 @@ Hit the CloudFront URL and your local browser will open the media object that st
 │   └── CFT_Cloudfront.yml
 │   └── s3_object_reader.py
 └── images
-    └── cloudfront.PNG
-        cloudfront_url.PNG
-        result.PNG
-        data_flow.PNG
-        lambda_url.PNG
+    └── cloudformation.png
+        cloudfront_url.png
+        result.png
+        data_flow.png
+        lambda_url.png
 ```
 
 ### `/code`
