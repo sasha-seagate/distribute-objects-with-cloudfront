@@ -1,4 +1,4 @@
-# Access Lyve Cloud S3 media contents through Amazon CloudFront
+# Distribute Lyve Cloud S3 media contents through Amazon CloudFront
 
 ## Introduction
 The following document will explain how to integrate Amazon CloudFront with AWS Lambda as origin to access the media contents from Lyve Cloud S3.
@@ -13,7 +13,7 @@ Amazon CloudFront and Lyve Cloud S3 Object Storage are used together to improve 
 The AWS Lambda function provided in this repository returns, upon request, the content of the specified S3 object and its content type. When accessed via a CloudFront URL, the content is retrieved from CloudFront's cache, rather than performing an additional GET operation to retrieve the object from Lyve Cloud's storage.
 
 The sequence diagram below shows how the high level data flow looks like.
-<p style="text-align:left"><img alt="Figure 1: Architecture – CloudFront with Lambda as origin" src="images/data_flow.PNG" width="600"/></p>
+<p align="center" style="text-align:left"><img alt="Figure 1: Architecture – CloudFront with Lambda as origin" src="images/data_flow.PNG" width="600"/></p>
 
  
 ## Requirements
@@ -41,8 +41,8 @@ The sequence diagram below shows how the high level data flow looks like.
 5. Under **Advanced settings**, check the **Enable function URL** field. Since the Lambda function needs to be publicly accessible select **NONE** for **Auth type**. This also creates the necessary resource-based policies to allow public access to the function.
 6. Click **Creation function** to finish the function creation setup.
 7. After the function creation process is finished, click on the **Configuration** tab and navigate to **Environmental variables** tab on left panel. 
-8. Click on **edit** and add the following environmental variables and its respective values:
-
+8. Click on **edit** and add the following environmental variables and its respective values: 
+  
   | Key  | Value |
   | ------------- | ------------- |
   | ACCESS_KEY  | Access Key to the Lyve Cloud S3 API  |
@@ -50,25 +50,25 @@ The sequence diagram below shows how the high level data flow looks like.
   | ENDPOINT  | Lyve Cloud S3 Endpoint URL  |
   | BUCKET_NAME  | Name of the bucket that contains the media object that you want to distribute  |
   | OBJECT_KEY  | Name of the media object that will be distributed  |
-
+  
 9. Navigate back to **Code**, copy and paste the contents of [LyveS3PresignedURL.py](code/s3_object_reader.py) into the Code source section.
 10. Note down the Lambda Function URL as shown in below figure.
-  <p style="text-align:left"><img alt="Figure 3: Lambda Function " src="images/lambda_url.PNG" width="600"/></p>
+  <p align="center" style="text-align:left"><img alt="Figure 3: Lambda Function " src="images/lambda_url.PNG" width="600"/></p>
 
 ### Step 3: Create the Amazon CloudFront configuration.
 1. Navigate to **CloudFormation** service and click on **Create Stack**.
 2. Under **Prerequisite - Prepare template** opt for the option 'Template is Ready'. 
 3. Under **Specify template** select **Upload a template file**, click on **Choose File** and choose [CFT_Cloudfront.yml](code/CFT_Cloudfront.yml). Click on **Next**.
 4. Under **Lambda Function Endpoint** enter the function URL obtained earlier as shown in below screenshot.
-     <p style="text-align:left"><img alt="Figure 4: cloudfront " src="images/cloudfront.PNG" width="600"/></p>
+     <p align="center" style="text-align:left"><img alt="Figure 4: cloudfront " src="images/cloudfront.PNG" width="600"/></p>
      Remove https:// and trailing slash from the Function URL while providing the input.
 5. Once the CloudFormation template is deployed, navigate to the **Outputs** tab of the CloudFormation stack to access the default CloudFront domain name created. You should see the media object that you stored in your bucket when the distribution domain is accessed through browser.
-    <p style="text-align:left"><img alt="Figure 5: cloudfront_url " src="images/cloudfront_url.PNG" width="600"/></p>
+    <p align="center" style="text-align:left"><img alt="Figure 5: cloudfront_url " src="images/cloudfront_url.PNG" width="600"/></p>
      
 
 ## Results 
 Hit the CloudFront URL and your local browser will open the media object that stored in your Lyve Cloud bucket.
-<p style="text-align:left"><img alt="Figure 6: result  " src="images/result.PNG" width="600"/></p>
+<p align="center" style="text-align:left"><img alt="Figure 6: result  " src="images/result.PNG" width="600"/></p>
 
 
 
