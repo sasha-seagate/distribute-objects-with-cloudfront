@@ -51,9 +51,9 @@ The sequence diagram below shows how the high level data flow looks like.
   | BUCKET_NAME  | Name of the bucket that contains the media object that you want to distribute  |
   | OBJECT_KEY  | Name of the media object that will be distributed  |
   
-9. Navigate back to **Code**, copy and paste the contents of [LyveS3PresignedURL.py](code/s3_object_reader.py) into the Code source section.
+9. Navigate back to **Code**, copy and paste the contents of [s3_object_reader.py](code/s3_object_reader.py) into the Code source section.
 10. Note down the Lambda Function URL as shown in below figure.
-  <p align="center" style="text-align:left"><img alt="Figure 3: Lambda Function " src="images/lambda_url.PNG" width="600"/></p>
+  <p align="center" style="text-align:left"><img alt="Figure 3: Lambda Function " src="images/lambda_url.png" width="600"/></p>
 
 ### Step 3: Create the Amazon CloudFront configuration.
 1. Navigate to **CloudFormation** service and click on **Create Stack**.
