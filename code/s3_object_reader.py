@@ -8,7 +8,7 @@ import base64
 access_key_id = os.environ['ACCESS_KEY']
 secret_access_key = os.environ['SECRET_KEY']
 
-# Set the bucket name, object key, endpoint and expiration time (in seconds)
+# Set the bucket name, object key, endpoint
 bucket_name = os.environ['BUCKET_NAME']
 object_key = os.environ['OBJECT_KEY']
 endpoint = os.environ['ENDPOINT']
