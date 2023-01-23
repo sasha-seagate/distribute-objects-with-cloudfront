@@ -1,13 +1,11 @@
-# Distribute Lyve Cloud S3 media contents through Amazon CloudFront
+# Lyve Cloud integration with Amazon CloudFront
 
 ## Introduction
-The following document explains how to integrate Amazon CloudFront with AWS Lambda as an origin to distribute media content from Lyve Cloud S3.
+The following document explains how to integrate Amazon CloudFront with Lyve Cloud as the source of media content.
 
-Fronting Lyve Cloud S3 media contents with Lambda and CloudFront allows you to cache content closer to the viewer by leveraging the globally distributed content distribution network. 
+Fronting Lyve Cloud S3 media contents with CloudFront using Lambda allows you to cache content closer to the viewer by leveraging the globally distributed content distribution network. 
 
-You could define custom domain names, turn on HTTPS delivery over TLS. Further, you could activate AWS Web Application Firewall (WAF) and AWS Shield Advanced to protect your application from malicious bots, prevent common application exploits and enhance protection from DDoS attacks. 
-
-Amazon CloudFront and Lyve Cloud S3 Object Storage are used together to improve the delivery and security of your mission critical applications. When a user requests for content through CloudFront, the request is routed to the edge location that provides the lowest latency and is delivered with optimal performance.
+Amazon CloudFront and Lyve Cloud Object Storage are used together to improve the delivery and security of your mission critical applications. When a user requests for content through CloudFront, the request is routed to the edge location that provides the lowest latency and is delivered with optimal performance.
 
 ## How it Works
 The AWS Lambda function provided in this repository returns, upon request, the content of the specified S3 object and its content type. When accessed via a CloudFront URL, the content is retrieved from CloudFront's cache, rather than performing an additional GET operation to retrieve the object from Lyve Cloud's storage.
